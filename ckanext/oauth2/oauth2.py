@@ -167,13 +167,17 @@ class OAuth2Helper(object):
         model.Session.commit()
         model.Session.remove()
 
+        groupmembership = list(filter(lambda g: str(g) in ["admin", "editor", "member"], user_data[self.profile_api_groupmembership_field]))
+        log.info("version_11 ...")
         log.info("User data: {0}".format(user_data))
+        log.info("User groups: {0}".format(groupmembership))
+        
         changedGroups = False
         if self.profile_api_groupmembership_field and self.profile_api_groupmembership_field in user_data:
             membership = model.Session.query(model.Member).filter(model.Member.table_name == 'user').filter(model.Member.table_id == user.id).all()
             
             
-            for group in user_data[self.profile_api_groupmembership_field]:
+            for group in groupmembership:
                 # expect organization to be {org: '<org-name>', role: '<role>' }
                 # if isinstance(group, dict):
                 #     group_name = group['org']
@@ -209,7 +213,6 @@ class OAuth2Helper(object):
                 #         changedGroups = True
 
                 ## Custome
-                log.info("version_10 ...")
                 log.info('Customize for supporting role of Keycloak')
                 log.info("GROUP: {0}, type: {1}".format(group, type(group)))
                 if type(group) == unicode or type(group) == str:
