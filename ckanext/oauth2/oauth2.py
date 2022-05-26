@@ -211,7 +211,7 @@ class OAuth2Helper(object):
                 ## Custome
                 log.info('Customize for supporting role of Keycloak')
                 log.info("GROUP: {0}, type: {1}".format(group, type(group)))
-                if type(group) == unicode:
+                if type(group) == unicode || type(group) == str:
                     group_name = 'organization'
                     capacity = str(group).lower()
                     if not capacity in ["admin", "editor", "member"]:
@@ -252,8 +252,10 @@ class OAuth2Helper(object):
 
 
             if changedGroups:
+                log.info("Saving user_data ...")
                 model.Session.commit()
                 model.Session.remove()
+                log.info("Saved user_date, completely")
 
         return user.name
 
