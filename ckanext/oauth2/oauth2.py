@@ -167,8 +167,9 @@ class OAuth2Helper(object):
         model.Session.commit()
         model.Session.remove()
 
+        marker = "version_12"
         groupmembership = list(filter(lambda g: str(g) in ["admin", "editor", "member"], user_data[self.profile_api_groupmembership_field]))
-        log.info("version_11 ...")
+        log.info("{0} ...".format(marker))
         log.info("User data: {0}".format(user_data))
         log.info("User groups: {0}".format(groupmembership))
         
@@ -248,6 +249,7 @@ class OAuth2Helper(object):
                         model.Session.add(member)
                         changedGroups = True
 
+            log.info("{0}".format(marker))
             log.info("changedGroups: {0}".format(changedGroups))
             for memberRec in membership:
                 changedGroups = True
