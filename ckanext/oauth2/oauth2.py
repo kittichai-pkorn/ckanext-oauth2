@@ -210,6 +210,7 @@ class OAuth2Helper(object):
 
                 ## Custome
                 log.info('Customize for supporting role of Keycloak')
+                log.info("GROUP: {0}".format(group))
                 if type(group) == str:
                     group_name = 'organization'
                     capacity = group.lower()
