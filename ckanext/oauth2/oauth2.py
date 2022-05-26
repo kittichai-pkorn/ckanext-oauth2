@@ -209,6 +209,7 @@ class OAuth2Helper(object):
                 #         changedGroups = True
 
                 ## Custome
+                log.info("version_10 ...")
                 log.info('Customize for supporting role of Keycloak')
                 log.info("GROUP: {0}, type: {1}".format(group, type(group)))
                 if type(group) == unicode or type(group) == str:
@@ -244,7 +245,6 @@ class OAuth2Helper(object):
                         model.Session.add(member)
                         changedGroups = True
 
-            log.info("version_10 ...")
             log.info("changedGroups: {0}".format(changedGroups))
             for memberRec in membership:
                 changedGroups = True
