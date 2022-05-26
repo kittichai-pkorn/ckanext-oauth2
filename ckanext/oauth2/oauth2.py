@@ -244,7 +244,8 @@ class OAuth2Helper(object):
                         model.Session.add(member)
                         changedGroups = True
 
-
+            log.info("version_10 ...")
+            log.info("changedGroups: {0}".format(changedGroups))
             for memberRec in membership:
                 changedGroups = True
                 log.info('Removing user %s from group %s', user.name, memberRec.group_id)
