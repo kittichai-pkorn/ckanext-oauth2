@@ -167,12 +167,49 @@ class OAuth2Helper(object):
         model.Session.commit()
         model.Session.remove()
 
+        log.inf("User data: {0}".format(user_data))
         changedGroups = False
         if self.profile_api_groupmembership_field and self.profile_api_groupmembership_field in user_data:
             membership = model.Session.query(model.Member).filter(model.Member.table_name == 'user').filter(model.Member.table_id == user.id).all()
             
+            
             for group in user_data[self.profile_api_groupmembership_field]:
                 # expect organization to be {org: '<org-name>', role: '<role>' }
+                # if isinstance(group, dict):
+                #     group_name = group['org']
+                #     capacity = group['role'].lower()
+                #     if not capacity in ["admin", "editor", "member"]:
+                #         capacity = "member"
+
+                #     dbGroup = model.Session.query(model.Group).filter(model.Group.name == group_name).first()
+                #     # create group if not exist
+                #     if dbGroup is None:
+                #         changedGroups = True
+                #         dbGroup = model.Group(name = group_name, title = group_name, description = group_name)
+                #         dbGroup.is_organization = True
+                #         dbGroup.type = 'organization'
+                #         model.Session.add(dbGroup)
+                #         log.info('Creatig a group %s', dbGroup.name)
+
+                #     memberDb = None
+                #     for memberOf in membership:
+                #         if memberOf.group_id == dbGroup.id and memberOf.capacity == capacity and memberOf.state == 'active':
+                #             memberDb = memberOf
+                #             break
+
+                #     if not memberDb is None:
+                #         membership.remove(memberDb)
+
+                #     if memberDb is None:
+                #         member = model.Member(table_name='user', table_id=user.id, capacity=capacity, group=dbGroup)
+                #         log.info('Add user %s into group %s', user.name, dbGroup.name)
+                #         rev = model.repo.new_revision()
+                #         rev.author = user.id
+                #         model.Session.add(member)
+                #         changedGroups = True
+
+                ## Custome
+                log.info('Customize for supporting role of Keycloak')
                 if isinstance(group, dict):
                     group_name = group['org']
                     capacity = group['role'].lower()
