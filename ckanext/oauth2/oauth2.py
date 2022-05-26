@@ -244,12 +244,11 @@ class OAuth2Helper(object):
                     if memberDb is None:
                         member = model.Member(table_name='user', table_id=user.id, capacity=capacity, group=dbGroup)
                         log.info('Add user %s into group %s', user.name, dbGroup.name)
-                        rev = model.repo.new_revision()
-                        rev.author = user.id
+                        #rev = model.repo.new_revision()
+                        #rev.author = user.id
                         model.Session.add(member)
                         changedGroups = True
 
-            log.info("{0}".format(marker))
             log.info("changedGroups: {0}".format(changedGroups))
             for memberRec in membership:
                 changedGroups = True
