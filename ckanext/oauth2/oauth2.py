@@ -211,7 +211,7 @@ class OAuth2Helper(object):
                 ## Custome
                 log.info('Customize for supporting role of Keycloak')
                 log.info("GROUP: {0}, type: {1}".format(group, type(group)))
-                if type(group) == unicode || type(group) == str:
+                if type(group) == unicode or type(group) == str:
                     group_name = 'organization'
                     capacity = str(group).lower()
                     if not capacity in ["admin", "editor", "member"]:
