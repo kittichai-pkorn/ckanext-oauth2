@@ -167,7 +167,7 @@ class OAuth2Helper(object):
         model.Session.commit()
         model.Session.remove()
 
-        marker = "version_12"
+        marker = "version_13"
         groupmembership = list(filter(lambda g: str(g) in ["admin", "editor", "member"], user_data[self.profile_api_groupmembership_field]))
         log.info("{0} ...".format(marker))
         log.info("User data: {0}".format(user_data))
@@ -213,7 +213,7 @@ class OAuth2Helper(object):
                 #         model.Session.add(member)
                 #         changedGroups = True
 
-                ## Custome
+                ## Customize
                 log.info('Customize for supporting role of Keycloak')
                 log.info("GROUP: {0}, type: {1}".format(group, type(group)))
                 if type(group) == unicode or type(group) == str:
