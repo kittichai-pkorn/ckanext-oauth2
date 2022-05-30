@@ -40,8 +40,7 @@ import jwt
 
 import constants
 
-tracker="14"
-log = logging.getLogger("{}__{}".format(tracker,__name__))
+log = logging.getLogger(__name__)
 
 
 def generate_state(url):
