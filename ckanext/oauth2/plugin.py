@@ -135,6 +135,8 @@ class OAuth2Plugin(plugins.SingletonPlugin):
         apikey = toolkit.request.headers.get(self.authorization_header, '')
         user_name = None
 
+        log.info('[OAuth2Plugin] environ: %s' % environ)
+        log.info('[OAuth2Plugin] apikey: %s' % apikey)
         if self.authorization_header == "authorization":
             if apikey.startswith('Bearer '):
                 apikey = apikey[7:].strip()

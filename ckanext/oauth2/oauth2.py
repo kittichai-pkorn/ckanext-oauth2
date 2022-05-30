@@ -106,8 +106,6 @@ class OAuth2Helper(object):
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
-        log.info("[OAuth2Helper] GET TOKEN: START...")
-
         if self.legacy_idm:
             # This is only required for Keyrock v6 and v5
             headers['Authorization'] = 'Basic %s' % base64.urlsafe_b64encode(
@@ -115,10 +113,10 @@ class OAuth2Helper(object):
             )
 
         try:
-            log.info("[OAuth2Helper] self.token_endpoint: {}".format(self.token_endpoint))
-            log.info("[OAuth2Helper] self.client_secret: {}".format(self.client_secret))
-            log.info("[OAuth2Helper] self.authorization_response: {}".format(toolkit.request.url))
-            log.info("[OAuth2Helper] self.verify_https: {}".format(self.verify_https))
+            # log.info("[OAuth2Helper] self.token_endpoint: {}".format(self.token_endpoint))
+            # log.info("[OAuth2Helper] self.client_secret: {}".format(self.client_secret))
+            # log.info("[OAuth2Helper] self.authorization_response: {}".format(toolkit.request.url))
+            # log.info("[OAuth2Helper] self.verify_https: {}".format(self.verify_https))
             token = oauth.fetch_token(self.token_endpoint,
                                       headers=headers,
                                       client_secret=self.client_secret,
@@ -126,15 +124,12 @@ class OAuth2Helper(object):
                                       verify=self.verify_https)
             
         except requests.exceptions.SSLError as e:
-            log.info("[OAuth2Helper] GET TOKEN - ERROR: %s" % e.message)
             # TODO search a better way to detect invalid certificates
             if "verify failed" in six.text_type(e):
                 raise InsecureTransportError()
             else:
                 raise
 
-        log.info("[OAuth2Helper] TOKEN: %s" % token)
-        log.info("[OAuth2Helper] GET TOKEN: END...")
         return token
 
     def identify(self, token):
