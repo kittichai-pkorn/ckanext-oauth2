@@ -312,6 +312,7 @@ class OAuth2Helper(object):
         headers = rememberer.remember(environ, identity)
         for header, value in headers:
             toolkit.response.headers.add(header, value)
+            log.info("[OAuth2Helper] repoze.who.userid:  key: {}, value: {}".format(header, value))
 
     def redirect_from_callback(self):
         '''Redirect to the callback URL after a successful authentication.'''
