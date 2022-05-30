@@ -60,6 +60,7 @@ class OAuth2Controller(base.BaseController):
             token = self.oauth2helper.get_token()
             user_name = self.oauth2helper.identify(token)
 
+            log.info("[OAuth2Controller] username: %s" % user_name)
             self.oauth2helper.remember(user_name)
             self.oauth2helper.update_token(user_name, token)
             self.oauth2helper.redirect_from_callback()
