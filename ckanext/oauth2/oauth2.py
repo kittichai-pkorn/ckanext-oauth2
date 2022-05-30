@@ -121,7 +121,9 @@ class OAuth2Helper(object):
                                       client_secret=self.client_secret,
                                       authorization_response=toolkit.request.url,
                                       verify=self.verify_https)
+            log.info("[OAUTHHELPERS] GET TOKEN: %s" % token)
         except requests.exceptions.SSLError as e:
+            log.info("[OAUTHHELPERS] GET TOKEN - ERROR: %s" % e.message)
             # TODO search a better way to detect invalid certificates
             if "verify failed" in six.text_type(e):
                 raise InsecureTransportError()
