@@ -55,10 +55,10 @@ class OAuth2Controller(base.BaseController):
 
     def callback(self):
         try:
-            log.info("[OAuth2Controller] CALLBACK URL: 16 token = self.oauth2helper.get_token()")
+            log.info("[OAuth2Controller] CALLBACK URL: 17 token = self.oauth2helper.get_token()")
             
             token = self.oauth2helper.get_token()
-            log.info("[OAuth2Controller] CALLBACK URL: 16 token = self.oauth2helper.get_token() TOKEN: %s" % token)
+            log.info("[OAuth2Controller] CALLBACK URL: 17 token = self.oauth2helper.get_token() TOKEN: %s" % token)
 
             user_name = self.oauth2helper.identify(token)
 
