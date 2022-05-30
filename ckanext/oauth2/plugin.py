@@ -137,7 +137,6 @@ class OAuth2Plugin(plugins.SingletonPlugin):
 
         log.info('[OAuth2Plugin] environ: %s' % environ)
         log.info('[OAuth2Plugin] authorization_header: %s' % self.authorization_header)
-        log.info('[OAuth2Plugin] G - user: %s' % (g.user if 'user' in g else None))
         
         if self.authorization_header == "authorization":
             if apikey.startswith('Bearer '):
