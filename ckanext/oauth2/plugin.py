@@ -140,8 +140,8 @@ class OAuth2Plugin(plugins.SingletonPlugin):
                 apikey = apikey[7:].strip()
             else:
                 apikey = ''
-                
-        log.info('User Token is %s' % apiKey)
+
+        log.info('User Token is %s' % apikey)
 
         # This API Key is not the one of CKAN, it's the one provided by the OAuth2 Service
         if apikey:
