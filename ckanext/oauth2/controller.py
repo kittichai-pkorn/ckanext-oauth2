@@ -76,7 +76,7 @@ class OAuth2Controller(base.BaseController):
                     error_description = e.error
                 else:
                     error_description = type(e).__name__
-
+            log.info("CALLBACK [ERROR]: %s" % e.message)
             toolkit.response.status_int = 302
             redirect_url = oauth2.get_came_from(toolkit.request.params.get('state'))
             redirect_url = '/' if redirect_url == constants.INITIAL_PAGE else redirect_url
