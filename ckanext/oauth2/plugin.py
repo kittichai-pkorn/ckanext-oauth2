@@ -133,12 +133,10 @@ class OAuth2Plugin(plugins.SingletonPlugin):
 
         environ = toolkit.request.environ
         apikey = toolkit.request.headers.get(self.authorization_header, '')
-        # user_name = None
-        user_name = environ['repoze.who.identity']['repoze.who.userid'] if environ['repoze.who.identity']['repoze.who.userid'] else None
+        user_name = None
 
         log.info('[OAuth2Plugin] environ: %s' % environ)
         log.info('[OAuth2Plugin] authorization_header: %s' % self.authorization_header)
-        log.info('[OAuth2Plugin] username: %s' % user_name)
         
         if self.authorization_header == "authorization":
             if apikey.startswith('Bearer '):
