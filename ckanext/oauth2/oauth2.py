@@ -106,7 +106,7 @@ class OAuth2Helper(object):
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
-        log.info("[OAUTHHELPERS] GET TOKEN: %s" % oauth.__name__)
+        log.info("[OAUTHHELPERS] GET TOKEN: START...")
 
         if self.legacy_idm:
             # This is only required for Keyrock v6 and v5
@@ -129,6 +129,7 @@ class OAuth2Helper(object):
             else:
                 raise
 
+        log.info("[OAUTHHELPERS] GET TOKEN: END...")
         return token
 
     def identify(self, token):
