@@ -40,8 +40,8 @@ import jwt
 
 import constants
 
-
-log = logging.getLogger(__name__)
+tracker="14"
+log = logging.getLogger("{}__{}".format(tracker,__name__))
 
 
 def generate_state(url):
@@ -107,7 +107,7 @@ class OAuth2Helper(object):
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
-        log.info("[OAUTHHELPERS] GET TOKEN: %s" % oauth)
+        log.info("[OAUTHHELPERS] GET TOKEN: %s" % oauth.__name__)
 
         if self.legacy_idm:
             # This is only required for Keyrock v6 and v5
@@ -171,9 +171,7 @@ class OAuth2Helper(object):
         model.Session.commit()
         model.Session.remove()
 
-        marker = "version_13"
         groupmembership = list(filter(lambda g: str(g) in ["admin", "editor", "member"], user_data[self.profile_api_groupmembership_field]))
-        log.info("{0} ...".format(marker))
         log.info("User data: {0}".format(user_data))
         log.info("User groups: {0}".format(groupmembership))
         
