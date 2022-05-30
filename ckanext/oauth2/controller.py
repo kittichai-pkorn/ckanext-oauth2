@@ -54,7 +54,7 @@ class OAuth2Controller(base.BaseController):
         self.oauth2helper.challenge(came_from_url)
 
     def callback(self):
-        log.info("CALLBACK URL: %s" % self.oauth2helper.get_token())
+        # log.info("CALLBACK URL: %s" % self.oauth2helper.get_token())
         try:
             token = self.oauth2helper.get_token()
             user_name = self.oauth2helper.identify(token)
@@ -76,7 +76,7 @@ class OAuth2Controller(base.BaseController):
                     error_description = e.error
                 else:
                     error_description = type(e).__name__
-            log.info("CALLBACK [ERROR]: %s" % e.message)
+            # log.info("CALLBACK [ERROR]: %s" % e.message)
             toolkit.response.status_int = 302
             redirect_url = oauth2.get_came_from(toolkit.request.params.get('state'))
             redirect_url = '/' if redirect_url == constants.INITIAL_PAGE else redirect_url
