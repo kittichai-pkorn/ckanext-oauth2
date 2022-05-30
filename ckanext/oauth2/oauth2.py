@@ -107,6 +107,8 @@ class OAuth2Helper(object):
             'Content-Type': 'application/x-www-form-urlencoded',
         }
 
+        log.info("[OAUTHHELPERS] GET TOKEN: %s" % oauth)
+
         if self.legacy_idm:
             # This is only required for Keyrock v6 and v5
             headers['Authorization'] = 'Basic %s' % base64.urlsafe_b64encode(
