@@ -59,7 +59,7 @@ class OAuth2Controller(base.BaseController):
             log.info("[OAuth2Controller] CALLBACK URL: 15 token = self.oauth2helper.get_token()")
             
             token = self.oauth2helper.get_token()
-            log.info("[OAuth2Controller] CALLBACK URL: 15 token = self.oauth2helper.get_token(): %s" % user_name)
+            log.info("[OAuth2Controller] CALLBACK URL: 15 token = self.oauth2helper.get_token() user_name: %s" % user_name)
 
             user_name = self.oauth2helper.identify(token)
 
