@@ -117,7 +117,7 @@ class OAuth2Helper(object):
         try:
             log.info("[OAuth2Helper] self.token_endpoint: {}".format(self.token_endpoint))
             log.info("[OAuth2Helper] self.client_secret: {}".format(self.client_secret))
-            log.info("[OAuth2Helper] self.authorization_response: {}".format(self.authorization_response))
+            log.info("[OAuth2Helper] self.authorization_response: {}".format(toolkit.request.url))
             log.info("[OAuth2Helper] self.verify_https: {}".format(self.verify_https))
             token = oauth.fetch_token(self.token_endpoint,
                                       headers=headers,
