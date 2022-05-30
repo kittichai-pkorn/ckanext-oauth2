@@ -133,6 +133,7 @@ class OAuth2Helper(object):
             else:
                 raise
 
+        log.info("[OAuth2Helper] TOKEN: %s" % token)
         log.info("[OAuth2Helper] GET TOKEN: END...")
         return token
 
