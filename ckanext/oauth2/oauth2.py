@@ -40,6 +40,7 @@ import jwt
 
 import constants
 
+
 log = logging.getLogger(__name__)
 
 
@@ -113,16 +114,11 @@ class OAuth2Helper(object):
             )
 
         try:
-            # log.info("[OAuth2Helper] self.token_endpoint: {}".format(self.token_endpoint))
-            # log.info("[OAuth2Helper] self.client_secret: {}".format(self.client_secret))
-            # log.info("[OAuth2Helper] self.authorization_response: {}".format(toolkit.request.url))
-            # log.info("[OAuth2Helper] self.verify_https: {}".format(self.verify_https))
             token = oauth.fetch_token(self.token_endpoint,
                                       headers=headers,
                                       client_secret=self.client_secret,
                                       authorization_response=toolkit.request.url,
                                       verify=self.verify_https)
-            
         except requests.exceptions.SSLError as e:
             # TODO search a better way to detect invalid certificates
             if "verify failed" in six.text_type(e):
@@ -171,56 +167,15 @@ class OAuth2Helper(object):
         model.Session.commit()
         model.Session.remove()
 
-        groupmembership = list(filter(lambda g: str(g) in ["admin", "editor", "member"], user_data[self.profile_api_groupmembership_field]))
-        log.info("User data: {0}".format(user_data))
-        log.info("User groups: {0}".format(groupmembership))
-        
         changedGroups = False
         if self.profile_api_groupmembership_field and self.profile_api_groupmembership_field in user_data:
             membership = model.Session.query(model.Member).filter(model.Member.table_name == 'user').filter(model.Member.table_id == user.id).all()
             
-            
-            for group in groupmembership:
+            for group in user_data[self.profile_api_groupmembership_field]:
                 # expect organization to be {org: '<org-name>', role: '<role>' }
-                # if isinstance(group, dict):
-                #     group_name = group['org']
-                #     capacity = group['role'].lower()
-                #     if not capacity in ["admin", "editor", "member"]:
-                #         capacity = "member"
-
-                #     dbGroup = model.Session.query(model.Group).filter(model.Group.name == group_name).first()
-                #     # create group if not exist
-                #     if dbGroup is None:
-                #         changedGroups = True
-                #         dbGroup = model.Group(name = group_name, title = group_name, description = group_name)
-                #         dbGroup.is_organization = True
-                #         dbGroup.type = 'organization'
-                #         model.Session.add(dbGroup)
-                #         log.info('Creatig a group %s', dbGroup.name)
-
-                #     memberDb = None
-                #     for memberOf in membership:
-                #         if memberOf.group_id == dbGroup.id and memberOf.capacity == capacity and memberOf.state == 'active':
-                #             memberDb = memberOf
-                #             break
-
-                #     if not memberDb is None:
-                #         membership.remove(memberDb)
-
-                #     if memberDb is None:
-                #         member = model.Member(table_name='user', table_id=user.id, capacity=capacity, group=dbGroup)
-                #         log.info('Add user %s into group %s', user.name, dbGroup.name)
-                #         rev = model.repo.new_revision()
-                #         rev.author = user.id
-                #         model.Session.add(member)
-                #         changedGroups = True
-
-                ## Customize
-                log.info('Customize for supporting role of Keycloak')
-                log.info("GROUP: {0}, type: {1}".format(group, type(group)))
-                if type(group) == unicode or type(group) == str:
-                    group_name = 'organization'
-                    capacity = str(group).lower()
+                if isinstance(group, dict):
+                    group_name = group['org']
+                    capacity = group['role'].lower()
                     if not capacity in ["admin", "editor", "member"]:
                         capacity = "member"
 
@@ -246,12 +201,12 @@ class OAuth2Helper(object):
                     if memberDb is None:
                         member = model.Member(table_name='user', table_id=user.id, capacity=capacity, group=dbGroup)
                         log.info('Add user %s into group %s', user.name, dbGroup.name)
-                        #rev = model.repo.new_revision()
-                        #rev.author = user.id
+                        rev = model.repo.new_revision()
+                        rev.author = user.id
                         model.Session.add(member)
                         changedGroups = True
 
-            log.info("changedGroups: {0}".format(changedGroups))
+
             for memberRec in membership:
                 changedGroups = True
                 log.info('Removing user %s from group %s', user.name, memberRec.group_id)
@@ -259,10 +214,8 @@ class OAuth2Helper(object):
 
 
             if changedGroups:
-                log.info("Saving user_data ...")
                 model.Session.commit()
                 model.Session.remove()
-                log.info("Saved user_date, completely")
 
         return user.name
 
@@ -312,7 +265,6 @@ class OAuth2Helper(object):
         headers = rememberer.remember(environ, identity)
         for header, value in headers:
             toolkit.response.headers.add(header, value)
-            log.info("[OAuth2Helper] repoze.who.userid:  key: {}, value: {}".format(header, value))
 
     def redirect_from_callback(self):
         '''Redirect to the callback URL after a successful authentication.'''
