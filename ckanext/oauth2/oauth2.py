@@ -37,6 +37,7 @@ from requests_oauthlib import OAuth2Session
 import six
 
 import jwt
+from flask import redirect
 
 import constants
 
@@ -100,6 +101,7 @@ class OAuth2Helper(object):
         log.debug('Challenge: Redirecting challenge to page {0}'.format(auth_url))
         # CKAN 2.6 only supports bytes
         return toolkit.redirect_to('{0}&platform={1}'.format(auth_url, self.platform).encode('utf-8'))
+        
 
     def get_token(self):
         oauth = OAuth2Session(self.client_id, redirect_uri=self.redirect_uri, scope=self.scope)
@@ -108,6 +110,7 @@ class OAuth2Helper(object):
         headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded',
+            'x-platform': self.platform,
         }
 
         if self.legacy_idm:
@@ -144,8 +147,9 @@ class OAuth2Helper(object):
                 if self.legacy_idm:
                     profile_response = requests.get(self.profile_api_url + '?access_token=%s' % token['access_token'], verify=self.verify_https)
                 else:
+                    headers = { 'x-platform': self.platform }
                     oauth = OAuth2Session(self.client_id, token=token)
-                    profile_response = oauth.get(self.profile_api_url, verify=self.verify_https)
+                    profile_response = oauth.get(self.profile_api_url, headers=headers, verify=self.verify_https)
 
             except requests.exceptions.SSLError as e:
                 # TODO search a better way to detect invalid certificates
