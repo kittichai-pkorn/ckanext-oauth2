@@ -175,7 +175,7 @@ class OAuth2Helper(object):
         model.Session.remove()
 
         changedGroups = False
-        log.debug('[GROUP MEMBERSHIP]: {0}'.format(user_data))
+        log.debug('[GROUP MEMBERSHIP]: {0}'.format(user_data[self.profile_api_groupmembership_field]))
         if self.profile_api_groupmembership_field and self.profile_api_groupmembership_field in user_data:
             membership = model.Session.query(model.Member).filter(model.Member.table_name == 'user').filter(model.Member.table_id == user.id).all()
             for group in user_data[self.profile_api_groupmembership_field]:
