@@ -55,6 +55,7 @@ class OAuth2Controller(base.BaseController):
 
     def callback(self):
         try:
+            raise Exception("FUCK YOU!!")
             token = self.oauth2helper.get_token()
             user_name = self.oauth2helper.identify(token)
             self.oauth2helper.remember(user_name)
