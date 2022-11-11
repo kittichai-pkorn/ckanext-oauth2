@@ -177,7 +177,7 @@ class OAuth2Helper(object):
         changedGroups = False
         if self.profile_api_groupmembership_field and self.profile_api_groupmembership_field in user_data:
             membership = model.Session.query(model.Member).filter(model.Member.table_name == 'user').filter(model.Member.table_id == user.id).all()
-            
+            log.debug('[GROUP MEMBERSHIP]: {0}'.format(user_data))
             for group in user_data[self.profile_api_groupmembership_field]:
                 # expect organization to be {org: '<org-name>', role: '<role>' }
                 if isinstance(group, dict):
