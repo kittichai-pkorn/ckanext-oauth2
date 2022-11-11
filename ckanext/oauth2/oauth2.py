@@ -91,11 +91,11 @@ class OAuth2Helper(object):
 
     def challenge(self, came_from_url):
         # This function is called by the log in function when the user is not logged in
-        log.debug('[CHALLENG]: {0}'.format(self.redirect_uri))
-        raise Exception('FUCKING')
         state = generate_state(came_from_url)
         oauth = OAuth2Session(self.client_id, redirect_uri=self.redirect_uri, scope=self.scope, state=state)
         auth_url, _ = oauth.authorization_url(self.authorization_endpoint)
+        log.debug('[CHALLENG]: {0}'.format(auth_url))
+        raise Exception('FUCKING')
         log.debug('Challenge: Redirecting challenge to page {0}'.format(auth_url))
         # CKAN 2.6 only supports bytes
         return toolkit.redirect_to(auth_url.encode('utf-8'))
