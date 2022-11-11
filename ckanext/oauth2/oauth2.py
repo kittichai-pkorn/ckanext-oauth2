@@ -66,7 +66,7 @@ class OAuth2Helper(object):
         self.jwt_enable = six.text_type(os.environ.get('CKAN_OAUTH2_JWT_ENABLE', toolkit.config.get('ckan.oauth2.jwt.enable',''))).strip().lower() in ("true", "1", "on")
 
         self.legacy_idm = six.text_type(os.environ.get('CKAN_OAUTH2_LEGACY_IDM', toolkit.config.get('ckan.oauth2.legacy_idm', ''))).strip().lower() in ("true", "1", "on")
-        self.authorization_endpoint = six.text_type(os.environ.get('CKAN_OAUTH2_AUTHORIZATION_ENDPOINT', toolkit.config.get('ckan.oauth2.authorization_endpoint', ''))).strip()
+        self.authorization_endpoint = six.text_type(os.environ.get('CKAN_OAUTH2_AUTHORIZATION_ENDPOINTXX', toolkit.config.get('ckan.oauth2.authorization_endpoint', ''))).strip()
         self.token_endpoint = six.text_type(os.environ.get('CKAN_OAUTH2_TOKEN_ENDPOINT', toolkit.config.get('ckan.oauth2.token_endpoint', ''))).strip()
         self.profile_api_url = six.text_type(os.environ.get('CKAN_OAUTH2_PROFILE_API_URL', toolkit.config.get('ckan.oauth2.profile_api_url', ''))).strip()
         self.client_id = six.text_type(os.environ.get('CKAN_OAUTH2_CLIENT_ID', toolkit.config.get('ckan.oauth2.client_id', ''))).strip()
@@ -130,7 +130,6 @@ class OAuth2Helper(object):
 
     def identify(self, token):
 
-        platform='thpf'
         if self.jwt_enable:
 
             access_token = bytes(token['access_token'])
@@ -140,7 +139,7 @@ class OAuth2Helper(object):
 
             try:
                 if self.legacy_idm:
-                    profile_response = requests.get(self.profile_api_url + '?access_token=%s' % token['access_token'] % '&platform={platform}', verify=self.verify_https)
+                    profile_response = requests.get(self.profile_api_url + '?access_token=%s' % token['access_token'], verify=self.verify_https)
                 else:
                     oauth = OAuth2Session(self.client_id, token=token)
                     profile_response = oauth.get(self.profile_api_url, verify=self.verify_https)
