@@ -180,6 +180,7 @@ class OAuth2Helper(object):
             membership = model.Session.query(model.Member).filter(model.Member.table_name == 'user').filter(model.Member.table_id == user.id).all()
             for group in user_data[self.profile_api_groupmembership_field]:
                 # expect organization to be {org: '<org-name>', role: '<role>' }
+                log.debug('[LOOP], GROUPS: {0} - {1}'.format(group, isinstance(group, dict)))
                 if isinstance(group, dict):
                     group_name = group['org']
                     capacity = group['role'].lower()
