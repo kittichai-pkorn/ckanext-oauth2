@@ -130,6 +130,7 @@ class OAuth2Helper(object):
 
     def identify(self, token):
 
+        platform='thpf'
         if self.jwt_enable:
 
             access_token = bytes(token['access_token'])
@@ -139,7 +140,7 @@ class OAuth2Helper(object):
 
             try:
                 if self.legacy_idm:
-                    profile_response = requests.get(self.profile_api_url + '?access_token=%s' % token['access_token'], verify=self.verify_https)
+                    profile_response = requests.get(self.profile_api_url + '?access_token=%s' % token['access_token'] % '&platform={platform}', verify=self.verify_https)
                 else:
                     oauth = OAuth2Session(self.client_id, token=token)
                     profile_response = oauth.get(self.profile_api_url, verify=self.verify_https)
